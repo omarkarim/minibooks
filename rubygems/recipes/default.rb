@@ -18,7 +18,8 @@
 # limitations under the License.
 #
 
-execute "gem sources --clear-all" do
+execute "gem sources --remove http://ec2-us-east-mirror.rightscale.com/rubygems/archive/latest/" do
+  only_if "gem sources --list | grep 'http://ec2-us-east-mirror.rightscale.com/rubygems/archive/latest/'"
 end
 
 execute "gem sources --add http://rubygems.org" do
