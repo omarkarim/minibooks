@@ -1,0 +1,42 @@
+{
+  "license": "Apache 2.0",
+  "recipes": {
+    "ubuntu": ""
+  },
+  "conflicting": {
+
+  },
+  "dependencies": {
+    "apt": [
+
+    ]
+  },
+  "providing": {
+    "ubuntu": [
+
+    ]
+  },
+  "long_description": "",
+  "description": "Sets up sources for ubuntu",
+  "replacing": {
+
+  },
+  "platforms": {
+    "ubuntu": [
+
+    ]
+  },
+  "version": "0.7.0",
+  "maintainer": "Opscode, Inc.",
+  "recommendations": {
+
+  },
+  "name": "ubuntu",
+  "maintainer_email": "cookbooks@opscode.com",
+  "attributes": {
+
+  },
+  "suggestions": {
+
+  }
+}
