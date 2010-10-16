@@ -25,3 +25,6 @@ end
 execute "gem sources --add http://rubygems.org" do
   not_if "gem sources --list | grep 'http://rubygems.org'"
 end
+
+execute "gem update --system" do
+end
