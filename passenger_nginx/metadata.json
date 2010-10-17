@@ -218,8 +218,8 @@
       ]
     },
     "recipes": {
-      "nginx::source": "Installs nginx from source and sets up configuration with Debian apache style with sites-enabled/sites-available",
-      "nginx": "Installs nginx package and sets up configuration with Debian apache style with sites-enabled/sites-available"
+      "passenger_nginx::source": "Installs nginx from source and sets up configuration with Debian apache style with sites-enabled/sites-available",
+      "passenger_nginx": "Installs nginx package and sets up configuration with Debian apache style with sites-enabled/sites-available"
     },
     "maintainer_email": "cookbooks@opscode.com",
     "groupings": {
@@ -247,7 +247,7 @@
     "version": "0.14.3",
     "suggestions": {
     },
-    "name": "nginx",
+    "name": "passenger_nginx",
     "conflicting": {
     },
     "long_description": "",
