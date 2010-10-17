@@ -21,11 +21,7 @@
 #
 
 include_recipe "build-essential"
-include_recipe "ruby_enterprise"
-
-ree_gem "passenger" do
-  version node[:passenger_enterprise][:version]
-end
+# include_recipe "ruby_enterprise"
 
 packages = value_for_platform(
     ["centos","redhat","fedora"] => {'default' => ['pcre-devel', 'openssl-devel']},
@@ -34,6 +30,10 @@ packages = value_for_platform(
 
 packages.each do |devpkg|
   package devpkg
+end
+
+gem_package "passenger" do
+  version node[:passenger_enterprise][:version]
 end
 
 nginx_version = node[:nginx][:version]
@@ -52,14 +52,25 @@ nginx_dir = node[:nginx][:dir]
 
 execute "passenger_nginx_module" do
   command %Q{
-    #{node[:ruby_enterprise][:install_path]}/bin/passenger-install-nginx-module \
+    passenger-install-nginx-module \
       --auto --prefix=#{nginx_install} \
       --nginx-source-dir=/tmp/nginx-#{nginx_version} \
       --extra-configure-flags='#{configure_flags}'
   }
-  not_if "#{nginx_install}/sbin/nginx -V 2>&1 | grep '#{node[:ruby_enterprise][:gems_dir]}/gems/passenger-#{node[:passenger_enterprise][:version]}/ext/nginx'"
+  # not_if "#{nginx_install}/sbin/nginx -V 2>&1 | grep '#{node[:ruby_enterprise][:gems_dir]}/gems/passenger-#{node[:passenger_enterprise][:version]}/ext/nginx'"
   # notifies :restart, resources(:service => "nginx")
 end
+
+# execute "passenger_nginx_module" do
+#   command %Q{
+#     #{node[:ruby_enterprise][:install_path]}/bin/passenger-install-nginx-module \
+#       --auto --prefix=#{nginx_install} \
+#       --nginx-source-dir=/tmp/nginx-#{nginx_version} \
+#       --extra-configure-flags='#{configure_flags}'
+#   }
+#   not_if "#{nginx_install}/sbin/nginx -V 2>&1 | grep '#{node[:ruby_enterprise][:gems_dir]}/gems/passenger-#{node[:passenger_enterprise][:version]}/ext/nginx'"
+#   # notifies :restart, resources(:service => "nginx")
+# end
 
 # bash "compile_nginx_source" do
 #   cwd "/tmp"
