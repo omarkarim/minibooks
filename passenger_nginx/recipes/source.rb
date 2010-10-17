@@ -45,6 +45,13 @@ remote_file "/tmp/nginx-#{nginx_version}.tar.gz" do
   action :create_if_missing
 end
 
+bash "unpack_nginx_source" do
+  cwd "/tmp"
+  code <<-EOH
+    tar zxf nginx-#{nginx_version}.tar.gz
+  EOH
+end
+
 configure_flags = node[:nginx][:configure_flags].join(" ")
 nginx_install = node[:nginx][:install_path]
 nginx_version = node[:nginx][:version]
