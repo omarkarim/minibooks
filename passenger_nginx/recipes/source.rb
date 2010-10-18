@@ -21,7 +21,6 @@
 #
 
 include_recipe "build-essential"
-# include_recipe "ruby_enterprise"
 
 packages = value_for_platform(
     ["centos","redhat","fedora"] => {'default' => ['pcre-devel', 'openssl-devel']},
@@ -50,13 +49,6 @@ execute "unpack nginx source" do
   action :run
 end
 
-# bash "unpack_nginx_source" do
-#   cwd "/tmp"
-#   code <<-EOH
-#     tar zxf nginx-#{nginx_version}.tar.gz
-#   EOH
-# end
-
 configure_flags = node[:nginx][:configure_flags].join(" ")
 nginx_install = node[:nginx][:install_path]
 nginx_version = node[:nginx][:version]
@@ -73,39 +65,18 @@ execute "passenger_nginx_module" do
   # notifies :restart, resources(:service => "nginx")
 end
 
-# execute "passenger_nginx_module" do
-#   command %Q{
-#     #{node[:ruby_enterprise][:install_path]}/bin/passenger-install-nginx-module \
-#       --auto --prefix=#{nginx_install} \
-#       --nginx-source-dir=/tmp/nginx-#{nginx_version} \
-#       --extra-configure-flags='#{configure_flags}'
-#   }
-#   not_if "#{nginx_install}/sbin/nginx -V 2>&1 | grep '#{node[:ruby_enterprise][:gems_dir]}/gems/passenger-#{node[:passenger_enterprise][:version]}/ext/nginx'"
-#   # notifies :restart, resources(:service => "nginx")
-# end
+directory node[:nginx][:log_dir] do
+  mode 0755
+  owner node[:nginx][:user]
+  action :create
+end
 
-# bash "compile_nginx_source" do
-#   cwd "/tmp"
-#   code <<-EOH
-#     tar zxf nginx-#{nginx_version}.tar.gz
-#     cd nginx-#{nginx_version} && ./configure #{configure_flags}
-#     make && make install
-#   EOH
-#   creates node[:nginx][:src_binary]
-# end
+directory node[:nginx][:dir] do
+  owner "root"
+  group "root"
+  mode "0755"
+end
 
-# directory node[:nginx][:log_dir] do
-#   mode 0755
-#   owner node[:nginx][:user]
-#   action :create
-# end
-# 
-# directory node[:nginx][:dir] do
-#   owner "root"
-#   group "root"
-#   mode "0755"
-# end
-# 
 # #install init db script
 template "/etc/init.d/nginx" do
   source "nginx.init.erb"
@@ -123,10 +94,10 @@ end
 # end
 # 
 
-# service "nginx" do
-#   supports :status => true, :restart => true, :reload => true
-#   action [ :enable, :start ]
-# end
+service "nginx" do
+  supports :status => true, :restart => true, :reload => true
+  action :enable
+end
 
 # #register service
 # service "nginx" do
@@ -135,36 +106,12 @@ end
 #   subscribes :restart, resources(:bash => "compile_nginx_source")
 # end
 # 
-# %w{ sites-available sites-enabled conf.d }.each do |dir|
-#   directory "#{node[:nginx][:dir]}/#{dir}" do
-#     owner "root"
-#     group "root"
-#     mode "0755"
-#   end
-# end
-# 
-# %w{nxensite nxdissite}.each do |nxscript|
-#   template "/usr/sbin/#{nxscript}" do
-#     source "#{nxscript}.erb"
-#     mode "0755"
-#     owner "root"
-#     group "root"
-#   end
-# end
-# 
-# template "nginx.conf" do
-#   path "#{node[:nginx][:dir]}/nginx.conf"
-#   source "nginx.conf.erb"
-#   owner "root"
-#   group "root"
-#   mode "0644"
-#   notifies :restart, resources(:service => "nginx"), :immediately
-# end
 
-# cookbook_file "#{node[:nginx][:dir]}/mime.types" do
-#   source "mime.types"
-#   owner "root"
-#   group "root"
-#   mode "0644"
-#   notifies :restart, resources(:service => "nginx"), :immediately
-# end
+template "nginx.conf" do
+  path "#{node[:nginx][:dir]}/nginx.conf"
+  source "nginx.conf.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  notifies :restart, resources(:service => "nginx"), :immediately
+end
