@@ -19,7 +19,7 @@
 #
 
 gem_package "memcached" do
-  version "0.19.3"
+  version "1"
 end
 
 gem_package "json" do
