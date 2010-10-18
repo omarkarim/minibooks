@@ -45,12 +45,17 @@ remote_file "/tmp/nginx-#{nginx_version}.tar.gz" do
   action :create_if_missing
 end
 
-bash "unpack_nginx_source" do
-  cwd "/tmp"
-  code <<-EOH
-    tar zxf nginx-#{nginx_version}.tar.gz
-  EOH
+execute "unpack nginx source" do
+  command "tar zxf /tmp/nginx-#{nginx_version}.tar.gz /tmp"
+  action :run
 end
+
+# bash "unpack_nginx_source" do
+#   cwd "/tmp"
+#   code <<-EOH
+#     tar zxf nginx-#{nginx_version}.tar.gz
+#   EOH
+# end
 
 configure_flags = node[:nginx][:configure_flags].join(" ")
 nginx_install = node[:nginx][:install_path]
@@ -89,26 +94,26 @@ end
 #   creates node[:nginx][:src_binary]
 # end
 
-# directory node[:nginx][:log_dir] do
-#   mode 0755
-#   owner node[:nginx][:user]
-#   action :create
-# end
-# 
-# directory node[:nginx][:dir] do
-#   owner "root"
-#   group "root"
-#   mode "0755"
-# end
-# 
-# #install init db script
-# template "/etc/init.d/nginx" do
-#   source "nginx.init.erb"
-#   owner "root"
-#   group "root"
-#   mode "0755"
-# end
-# 
+directory node[:nginx][:log_dir] do
+  mode 0755
+  owner node[:nginx][:user]
+  action :create
+end
+
+directory node[:nginx][:dir] do
+  owner "root"
+  group "root"
+  mode "0755"
+end
+
+#install init db script
+template "/etc/init.d/nginx" do
+  source "nginx.init.erb"
+  owner "root"
+  group "root"
+  mode "0755"
+end
+ 
 # #install sysconfig file (not really needed but standard)
 # template "/etc/sysconfig/nginx" do
 #   source "nginx.sysconfig.erb"
@@ -117,6 +122,12 @@ end
 #   mode "0644"
 # end
 # 
+
+service "nginx" do
+  supports :status => true, :restart => true, :reload => true
+  action [ :enable, :start ]
+end
+
 # #register service
 # service "nginx" do
 #   supports :status => true, :restart => true, :reload => true
@@ -141,14 +152,14 @@ end
 #   end
 # end
 # 
-# template "nginx.conf" do
-#   path "#{node[:nginx][:dir]}/nginx.conf"
-#   source "nginx.conf.erb"
-#   owner "root"
-#   group "root"
-#   mode "0644"
-#   notifies :restart, resources(:service => "nginx"), :immediately
-# end
+template "nginx.conf" do
+  path "#{node[:nginx][:dir]}/nginx.conf"
+  source "nginx.conf.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  notifies :restart, resources(:service => "nginx"), :immediately
+end
 
 # cookbook_file "#{node[:nginx][:dir]}/mime.types" do
 #   source "mime.types"
