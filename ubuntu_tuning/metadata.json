@@ -1,0 +1,30 @@
+{
+    "recommendations": {
+    },
+    "attributes": {
+    },
+    "platforms": {
+    },
+    "maintainer": "Mobdub LLC",
+    "long_description": "Tunes Ubuntu network stack\n",
+    "suggestions": {
+    },
+    "dependencies": {
+    },
+    "recipes": {
+      "ubuntu_tuning": "Tunes Ubuntu"
+    },
+    "maintainer_email": "omar@mobdub.com",
+    "version": "0.2.0",
+    "conflicting": {
+    },
+    "name": "ubuntu_tuning",
+    "providing": {
+    },
+    "license": "Apache 2.0",
+    "replacing": {
+    },
+    "groupings": {
+    },
+    "description": "Tunes Ubuntu"
+  }
