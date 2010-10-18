@@ -107,12 +107,12 @@ end
 # end
 # 
 # #install init db script
-# template "/etc/init.d/nginx" do
-#   source "nginx.init.erb"
-#   owner "root"
-#   group "root"
-#   mode "0755"
-# end
+template "/etc/init.d/nginx" do
+  source "nginx.init.erb"
+  owner "root"
+  group "root"
+  mode "0755"
+end
  
 # #install sysconfig file (not really needed but standard)
 # template "/etc/sysconfig/nginx" do
