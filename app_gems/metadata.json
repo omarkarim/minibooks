@@ -1,0 +1,30 @@
+{
+    "recommendations": {
+    },
+    "attributes": {
+    },
+    "platforms": {
+    },
+    "maintainer": "Mobdub LLC",
+    "long_description": "Installs application gem dependencies\n",
+    "suggestions": {
+    },
+    "dependencies": {
+    },
+    "recipes": {
+      "app_gems": "Installs gem dependencies"
+    },
+    "maintainer_email": "omar@mobdub.com",
+    "version": "0.2.0",
+    "conflicting": {
+    },
+    "name": "app_gems",
+    "providing": {
+    },
+    "license": "Apache 2.0",
+    "replacing": {
+    },
+    "groupings": {
+    },
+    "description": "Mobdub gem installer"
+  }
