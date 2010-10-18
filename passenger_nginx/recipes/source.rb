@@ -106,12 +106,12 @@ end
 # #   subscribes :restart, resources(:bash => "compile_nginx_source")
 # # end
 # # 
-# 
-# template "nginx.conf" do
-#   path "#{node[:nginx][:dir]}/nginx.conf"
-#   source "nginx.conf.erb"
-#   owner "root"
-#   group "root"
-#   mode "0644"
-#   notifies :restart, resources(:service => "nginx"), :immediately
-# end
+
+template "nginx.conf" do
+  path "#{node[:nginx][:dir]}/nginx.conf"
+  source "nginx.conf.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  # notifies :restart, resources(:service => "nginx"), :immediately
+end
