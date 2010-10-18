@@ -77,7 +77,7 @@ directory node[:nginx][:dir] do
   mode "0755"
 end
 
-# #install init db script
+#install init script
 template "/etc/init.d/nginx" do
   source "nginx.init.erb"
   owner "root"
@@ -94,24 +94,24 @@ end
 # end
 # 
 
-service "nginx" do
-  supports :status => true, :restart => true, :reload => true
-  action :enable
-end
-
-# #register service
 # service "nginx" do
 #   supports :status => true, :restart => true, :reload => true
 #   action :enable
-#   subscribes :restart, resources(:bash => "compile_nginx_source")
 # end
 # 
-
-template "nginx.conf" do
-  path "#{node[:nginx][:dir]}/nginx.conf"
-  source "nginx.conf.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  notifies :restart, resources(:service => "nginx"), :immediately
-end
+# # #register service
+# # service "nginx" do
+# #   supports :status => true, :restart => true, :reload => true
+# #   action :enable
+# #   subscribes :restart, resources(:bash => "compile_nginx_source")
+# # end
+# # 
+# 
+# template "nginx.conf" do
+#   path "#{node[:nginx][:dir]}/nginx.conf"
+#   source "nginx.conf.erb"
+#   owner "root"
+#   group "root"
+#   mode "0644"
+#   notifies :restart, resources(:service => "nginx"), :immediately
+# end
