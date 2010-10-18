@@ -94,25 +94,25 @@ end
 #   creates node[:nginx][:src_binary]
 # end
 
-directory node[:nginx][:log_dir] do
-  mode 0755
-  owner node[:nginx][:user]
-  action :create
-end
-
-directory node[:nginx][:dir] do
-  owner "root"
-  group "root"
-  mode "0755"
-end
-
-#install init db script
-template "/etc/init.d/nginx" do
-  source "nginx.init.erb"
-  owner "root"
-  group "root"
-  mode "0755"
-end
+# directory node[:nginx][:log_dir] do
+#   mode 0755
+#   owner node[:nginx][:user]
+#   action :create
+# end
+# 
+# directory node[:nginx][:dir] do
+#   owner "root"
+#   group "root"
+#   mode "0755"
+# end
+# 
+# #install init db script
+# template "/etc/init.d/nginx" do
+#   source "nginx.init.erb"
+#   owner "root"
+#   group "root"
+#   mode "0755"
+# end
  
 # #install sysconfig file (not really needed but standard)
 # template "/etc/sysconfig/nginx" do
@@ -123,10 +123,10 @@ end
 # end
 # 
 
-service "nginx" do
-  supports :status => true, :restart => true, :reload => true
-  action [ :enable, :start ]
-end
+# service "nginx" do
+#   supports :status => true, :restart => true, :reload => true
+#   action [ :enable, :start ]
+# end
 
 # #register service
 # service "nginx" do
@@ -152,14 +152,14 @@ end
 #   end
 # end
 # 
-template "nginx.conf" do
-  path "#{node[:nginx][:dir]}/nginx.conf"
-  source "nginx.conf.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  notifies :restart, resources(:service => "nginx"), :immediately
-end
+# template "nginx.conf" do
+#   path "#{node[:nginx][:dir]}/nginx.conf"
+#   source "nginx.conf.erb"
+#   owner "root"
+#   group "root"
+#   mode "0644"
+#   notifies :restart, resources(:service => "nginx"), :immediately
+# end
 
 # cookbook_file "#{node[:nginx][:dir]}/mime.types" do
 #   source "mime.types"
