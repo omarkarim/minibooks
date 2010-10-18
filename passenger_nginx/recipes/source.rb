@@ -24,7 +24,7 @@ include_recipe "build-essential"
 
 packages = value_for_platform(
     ["centos","redhat","fedora"] => {'default' => ['pcre-devel', 'openssl-devel']},
-    "default" => ['libpcre3', 'libpcre3-dev', 'libssl-dev']
+    "default" => ['libpcre3', 'libpcre3-dev', 'libssl-dev', 'libsasl2-dev']
   )
 
 packages.each do |devpkg|
