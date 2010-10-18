@@ -46,7 +46,7 @@ remote_file "/tmp/nginx-#{nginx_version}.tar.gz" do
 end
 
 execute "unpack nginx source" do
-  command "tar zxf /tmp/nginx-#{nginx_version}.tar.gz /tmp"
+  command "tar zxf /tmp/nginx-#{nginx_version}.tar.gz -C /tmp"
   action :run
 end
 
